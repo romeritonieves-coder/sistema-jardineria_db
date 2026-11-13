@@ -1,10 +1,15 @@
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/ports/out/ClienteRepository.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/ports/out/EmpleadoRepository.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/ports/out/ProductoRepository.java
+/home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/services/ProductoService.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/domain/model/Cliente.java
+/home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/domain/model/DetallePedido.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/domain/model/Empleado.java
+/home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/domain/model/Oficina.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/domain/model/Producto.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/infrastructure/adapters/in/ui/DashboardApp.java
+/home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/infrastructure/adapters/out/persistence/ClienteRepositoryJdbc.java
+/home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/infrastructure/adapters/out/persistence/EmpleadoRepositoryJdbc.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/infrastructure/adapters/out/persistence/ProductoRepositoryJdbc.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/infrastructure/config/DatabaseConfig.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/infrastructure/tools/DatabaseSeeder.java

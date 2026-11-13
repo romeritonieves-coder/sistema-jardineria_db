@@ -1,6 +1,7 @@
 package com.jardineria.infrastructure.adapters.in.ui;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.jardineria.application.services.ProductoService;
 import com.jardineria.infrastructure.adapters.out.persistence.ProductoRepositoryJdbc;
 import com.jardineria.domain.model.Producto;
 
@@ -13,17 +14,17 @@ public class DashboardApp extends JFrame {
 
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
-    private ProductoRepositoryJdbc productoRepo;
+    private ProductoService productoService;
 
     public DashboardApp() {
-        productoRepo = new ProductoRepositoryJdbc();
+        this.productoService = new ProductoService(new ProductoRepositoryJdbc());
         configurarVentana();
         inicializarComponentes();
         cargarDatos();
     }
 
     private void configurarVentana() {
-        setTitle("Sistema de Gestión de Jardinería - Dashboard");
+        setTitle("Sistema de Gestión de Jardinería - Dashboard (SQLite)");
         setSize(1024, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -57,7 +58,7 @@ public class DashboardApp extends JFrame {
     }
 
     private void cargarDatos() {
-        List<Producto> productos = productoRepo.listarTodos();
+        List<Producto> productos = productoService.obtenerTodosLosProductos();
         for (Producto p : productos) {
             modeloTabla.addRow(new Object[]{
                     p.getCodigoProducto(),
@@ -75,9 +76,6 @@ public class DashboardApp extends JFrame {
         } catch (Exception ex) {
             System.err.println("Error al inicializar FlatLaf");
         }
-
-        SwingUtilities.invokeLater(() -> {
-            new DashboardApp().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new DashboardApp().setVisible(true));
     }
 }
