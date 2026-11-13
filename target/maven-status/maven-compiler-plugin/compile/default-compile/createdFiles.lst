@@ -1,0 +1,13 @@
+com/jardineria/application/ports/out/ProductoRepository.class
+com/jardineria/application/ports/out/EmpleadoRepository.class
+com/jardineria/application/ports/out/ClienteRepository.class
+com/jardineria/domain/model/Cliente.class
+com/jardineria/domain/model/Empleado$EmpleadoBuilder.class
+com/jardineria/domain/model/Cliente$ClienteBuilder.class
+com/jardineria/infrastructure/config/DatabaseConfig.class
+com/jardineria/domain/model/Producto.class
+com/jardineria/infrastructure/adapters/in/ui/DashboardApp.class
+com/jardineria/domain/model/Empleado.class
+com/jardineria/infrastructure/tools/DatabaseSeeder.class
+com/jardineria/domain/model/Producto$ProductoBuilder.class
+com/jardineria/infrastructure/adapters/out/persistence/ProductoRepositoryJdbc.class
