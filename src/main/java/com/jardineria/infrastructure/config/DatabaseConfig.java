@@ -8,15 +8,13 @@ public class DatabaseConfig {
     private static DatabaseConfig instancia;
     private Connection connection;
 
-    private static final String URL = "jdbc:mysql://localhost:3306/jardineria";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String URL = "jdbc:sqlite:jardineria.db";
 
     private DatabaseConfig() {
         try {
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(URL);
         } catch (SQLException e) {
-            throw new RuntimeException("Error al conectar con la base de datos", e);
+            throw new RuntimeException("Error al conectar con SQLite", e);
         }
     }
 
