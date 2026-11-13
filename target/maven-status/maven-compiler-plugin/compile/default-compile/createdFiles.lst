@@ -11,6 +11,7 @@ com/jardineria/domain/model/Oficina.class
 com/jardineria/domain/model/Producto.class
 com/jardineria/infrastructure/adapters/in/ui/DashboardApp.class
 com/jardineria/application/services/ProductoService.class
+com/jardineria/infrastructure/adapters/in/ui/DashboardApp$1.class
 com/jardineria/domain/model/Empleado.class
 com/jardineria/domain/model/Oficina$OficinaBuilder.class
 com/jardineria/infrastructure/tools/DatabaseSeeder.class
