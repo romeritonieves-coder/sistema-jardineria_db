@@ -1,6 +1,8 @@
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/ports/out/ClienteRepository.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/ports/out/EmpleadoRepository.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/ports/out/ProductoRepository.java
+/home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/services/ClienteService.java
+/home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/services/EmpleadoService.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/application/services/ProductoService.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/domain/model/Cliente.java
 /home/camper/Jardineria/sistema-jardineria/src/main/java/com/jardineria/domain/model/DetallePedido.java

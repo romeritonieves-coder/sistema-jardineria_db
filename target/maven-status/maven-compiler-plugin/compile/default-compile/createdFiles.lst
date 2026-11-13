@@ -1,4 +1,5 @@
 com/jardineria/domain/model/DetallePedido$DetallePedidoBuilder.class
+com/jardineria/application/services/ClienteService.class
 com/jardineria/application/ports/out/ProductoRepository.class
 com/jardineria/application/ports/out/EmpleadoRepository.class
 com/jardineria/application/ports/out/ClienteRepository.class
@@ -19,3 +20,4 @@ com/jardineria/infrastructure/adapters/out/persistence/ClienteRepositoryJdbc.cla
 com/jardineria/domain/model/Producto$ProductoBuilder.class
 com/jardineria/infrastructure/adapters/out/persistence/EmpleadoRepositoryJdbc.class
 com/jardineria/infrastructure/adapters/out/persistence/ProductoRepositoryJdbc.class
+com/jardineria/application/services/EmpleadoService.class

@@ -3,13 +3,10 @@ package com.jardineria.infrastructure.adapters.in.ui;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.jardineria.application.services.ClienteService;
-import com.jardineria.application.services.EmpleadoService;
 import com.jardineria.application.services.ProductoService;
 import com.jardineria.domain.model.Cliente;
-import com.jardineria.domain.model.Empleado;
 import com.jardineria.domain.model.Producto;
 import com.jardineria.infrastructure.adapters.out.persistence.ClienteRepositoryJdbc;
-import com.jardineria.infrastructure.adapters.out.persistence.EmpleadoRepositoryJdbc;
 import com.jardineria.infrastructure.adapters.out.persistence.ProductoRepositoryJdbc;
 
 import javax.swing.*;
@@ -23,7 +20,6 @@ public class DashboardApp extends JFrame {
     // Servicios
     private ProductoService productoService;
     private ClienteService clienteService;
-    private EmpleadoService empleadoService;
     
     // UI y Navegación
     private CardLayout cardLayout;
@@ -41,7 +37,6 @@ public class DashboardApp extends JFrame {
     public DashboardApp() {
         this.productoService = new ProductoService(new ProductoRepositoryJdbc());
         this.clienteService = new ClienteService(new ClienteRepositoryJdbc());
-        this.empleadoService = new EmpleadoService(new EmpleadoRepositoryJdbc());
         this.menuButtons = new ArrayList<>();
         
         configurarVentana();
@@ -66,7 +61,7 @@ public class DashboardApp extends JFrame {
         mainContentPanel.add(crearVistaDashboard(), "Dashboard");
         mainContentPanel.add(crearVistaClientes(), "Gestión Comercial");
         mainContentPanel.add(crearVistaInventario(), "Inventario");
-        mainContentPanel.add(crearVistaEmpleados(), "Empleados");
+        mainContentPanel.add(crearVistaMantenimiento("Empleados"), "Empleados");
         mainContentPanel.add(crearVistaMantenimiento("Reportes"), "Reportes");
         mainContentPanel.add(crearVistaMantenimiento("Ajustes"), "Ajustes");
 
@@ -130,18 +125,6 @@ public class DashboardApp extends JFrame {
             datos[i] = new Object[]{p.getCodigoProducto(), p.getNombre(), p.getGama(), p.getCantidadEnStock(), "$ " + p.getPrecioVenta()};
         }
         return crearPanelTablaEstandar("Catálogo e Inventario", columnas, datos);
-    }
-
-    private JPanel crearVistaEmpleados() {
-        List<Empleado> empleados = empleadoService.obtenerTodos();
-        String[] columnas = {"ID Empleado", "Nombre", "Email", "Puesto"};
-        Object[][] datos = new Object[empleados.size()][columnas.length];
-        
-        for (int i = 0; i < empleados.size(); i++) {
-            Empleado e = empleados.get(i);
-            datos[i] = new Object[]{e.getCodigoEmpleado(), e.getNombre(), e.getEmail(), e.getPuesto()};
-        }
-        return crearPanelTablaEstandar("Nómina de Empleados", columnas, datos);
     }
 
     private JPanel crearVistaMantenimiento(String titulo) {
