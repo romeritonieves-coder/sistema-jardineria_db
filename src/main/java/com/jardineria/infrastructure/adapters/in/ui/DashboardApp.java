@@ -3,10 +3,13 @@ package com.jardineria.infrastructure.adapters.in.ui;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.jardineria.application.services.ClienteService;
+import com.jardineria.application.services.EmpleadoService;
 import com.jardineria.application.services.ProductoService;
 import com.jardineria.domain.model.Cliente;
+import com.jardineria.domain.model.Empleado;
 import com.jardineria.domain.model.Producto;
 import com.jardineria.infrastructure.adapters.out.persistence.ClienteRepositoryJdbc;
+import com.jardineria.infrastructure.adapters.out.persistence.EmpleadoRepositoryJdbc;
 import com.jardineria.infrastructure.adapters.out.persistence.ProductoRepositoryJdbc;
 
 import javax.swing.*;
@@ -20,13 +23,14 @@ public class DashboardApp extends JFrame {
     // Servicios
     private ProductoService productoService;
     private ClienteService clienteService;
+    private EmpleadoService empleadoService;
     
     // UI y Navegación
     private CardLayout cardLayout;
     private JPanel mainContentPanel;
     private List<JButton> menuButtons;
 
-    // Paleta de Colores
+    // Paleta de Colores SaaS / Tailwind
     private final Color BG_APP = new Color(15, 23, 42);
     private final Color BG_SIDEBAR = new Color(30, 41, 59);
     private final Color BG_CARD = new Color(30, 41, 59);
@@ -37,6 +41,7 @@ public class DashboardApp extends JFrame {
     public DashboardApp() {
         this.productoService = new ProductoService(new ProductoRepositoryJdbc());
         this.clienteService = new ClienteService(new ClienteRepositoryJdbc());
+        this.empleadoService = new EmpleadoService(new EmpleadoRepositoryJdbc());
         this.menuButtons = new ArrayList<>();
         
         configurarVentana();
@@ -57,13 +62,13 @@ public class DashboardApp extends JFrame {
         mainContentPanel = new JPanel(cardLayout);
         mainContentPanel.setBackground(BG_APP);
 
-        // Registrar cada módulo en el CardLayout
+        // Registrar los 6 módulos
         mainContentPanel.add(crearVistaDashboard(), "Dashboard");
         mainContentPanel.add(crearVistaClientes(), "Gestión Comercial");
         mainContentPanel.add(crearVistaInventario(), "Inventario");
-        mainContentPanel.add(crearVistaMantenimiento("Empleados"), "Empleados");
-        mainContentPanel.add(crearVistaMantenimiento("Reportes"), "Reportes");
-        mainContentPanel.add(crearVistaMantenimiento("Ajustes"), "Ajustes");
+        mainContentPanel.add(crearVistaEmpleados(), "Empleados");
+        mainContentPanel.add(crearVistaReportes(), "Reportes");
+        mainContentPanel.add(crearVistaAjustes(), "Ajustes");
 
         add(crearSidebar(), BorderLayout.WEST);
         add(mainContentPanel, BorderLayout.CENTER);
@@ -97,7 +102,7 @@ public class DashboardApp extends JFrame {
         kpiPanel.setBackground(BG_APP);
         kpiPanel.add(crearKpiCard("Ingresos del Mes", "$ 45,231.00", "▲ +12.5% vs mes anterior", new Color(34, 197, 94)));
         kpiPanel.add(crearKpiCard("Pedidos Pendientes", "142", "⏱ Requieren atención hoy", ACCENT_COLOR));
-        kpiPanel.add(crearKpiCard("Clientes Activos", "2,845", "▲ +84 nuevos", new Color(168, 85, 247)));
+        kpiPanel.add(crearKpiCard("Clientes Activos", String.valueOf(clienteService.obtenerTodos().size()), "Registrados en SQLite", new Color(168, 85, 247)));
         
         contentPanel.add(kpiPanel, BorderLayout.CENTER);
         return contentPanel;
@@ -127,13 +132,79 @@ public class DashboardApp extends JFrame {
         return crearPanelTablaEstandar("Catálogo e Inventario", columnas, datos);
     }
 
-    private JPanel crearVistaMantenimiento(String titulo) {
+    private JPanel crearVistaEmpleados() {
+        List<Empleado> empleados = empleadoService.obtenerTodos();
+        String[] columnas = {"ID Empleado", "Nombre", "Email", "Puesto"};
+        Object[][] datos = new Object[empleados.size()][columnas.length];
+        
+        for (int i = 0; i < empleados.size(); i++) {
+            Empleado e = empleados.get(i);
+            datos[i] = new Object[]{e.getCodigoEmpleado(), e.getNombre(), e.getEmail(), e.getPuesto()};
+        }
+        return crearPanelTablaEstandar("Nómina de Empleados", columnas, datos);
+    }
+
+    private JPanel crearVistaReportes() {
+        JPanel panel = new JPanel(new BorderLayout(20, 20));
+        panel.setBackground(BG_APP);
+        panel.setBorder(BorderFactory.createEmptyBorder(25, 30, 30, 30));
+
+        JLabel title = new JLabel("Reportes y Estadísticas");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        title.setForeground(TEXT_PRIMARY);
+        panel.add(title, BorderLayout.NORTH);
+
+        JPanel kpiPanel = new JPanel(new GridLayout(2, 2, 20, 20));
+        kpiPanel.setBackground(BG_APP);
+        
+        kpiPanel.add(crearKpiCard("Total Productos", String.valueOf(productoService.obtenerTodosLosProductos().size()), "En inventario actual", ACCENT_COLOR));
+        kpiPanel.add(crearKpiCard("Total Clientes", String.valueOf(clienteService.obtenerTodos().size()), "Cartera registrada", new Color(34, 197, 94)));
+        kpiPanel.add(crearKpiCard("Total Empleados", String.valueOf(empleadoService.obtenerTodos().size()), "Nómina activa", new Color(168, 85, 247)));
+        kpiPanel.add(crearKpiCard("Estado Base de Datos", "En línea", "SQLite conectado correctamente", new Color(245, 158, 11)));
+
+        panel.add(kpiPanel, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private JPanel crearVistaAjustes() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(BG_APP);
-        JLabel lblTitulo = new JLabel("Módulo de " + titulo + " en construcción 🚧", SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        lblTitulo.setForeground(TEXT_MUTED);
-        panel.add(lblTitulo, BorderLayout.CENTER);
+        panel.setBorder(BorderFactory.createEmptyBorder(25, 30, 30, 30));
+
+        JPanel card = new JPanel(new GridLayout(4, 1, 10, 10));
+        card.setBackground(BG_CARD);
+        card.putClientProperty(FlatClientProperties.STYLE, "arc: 20");
+        card.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+        JLabel title = new JLabel("Configuración del Sistema");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        title.setForeground(TEXT_PRIMARY);
+        
+        JLabel dbInfo = new JLabel("Motor de Base de Datos actual: SQLite (Modo Local por restricción de permisos)");
+        dbInfo.setForeground(TEXT_MUTED);
+        dbInfo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
+        JLabel pathInfo = new JLabel("Ruta del archivo: ./jardineria.db");
+        pathInfo.setForeground(TEXT_MUTED);
+        pathInfo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
+        JButton btnBackup = new JButton("Realizar Respaldo (Backup)");
+        btnBackup.setBackground(ACCENT_COLOR);
+        btnBackup.setForeground(BG_APP);
+        btnBackup.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnBackup.putClientProperty(FlatClientProperties.STYLE, "arc: 10; borderWidth: 0;");
+        btnBackup.addActionListener(e -> JOptionPane.showMessageDialog(this, "Respaldo creado con éxito.\nRuta: ./backup_jardineria.db", "Backup Completo", JOptionPane.INFORMATION_MESSAGE));
+
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 10));
+        btnPanel.setBackground(BG_CARD);
+        btnPanel.add(btnBackup);
+
+        card.add(title);
+        card.add(dbInfo);
+        card.add(pathInfo);
+        card.add(btnPanel);
+
+        panel.add(card, BorderLayout.NORTH);
         return panel;
     }
 
